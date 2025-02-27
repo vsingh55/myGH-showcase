@@ -25,7 +25,7 @@ def format_tech_name(tech):
     return replacements.get(tech, tech.replace('-', ' ').title())
 
 def get_blog_link(repo_name):
-    slug = repo_name.lower().remove('_')
+    slug = repo_name.lower().replace('_', '')  
     return f"{BLOG_BASE_URL}/{slug}" if slug else f"{BLOG_BASE_URL}/series/projects"
 
 def debug_print_repos(repos):
