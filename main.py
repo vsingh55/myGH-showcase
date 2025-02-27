@@ -235,23 +235,23 @@ def generate_html_table(repos):
         <h1 class="page-title">Cloud & DevOps Projects RepoHub</h1>
         
         <!-- ======== UPDATED CONNECT SECTION ======== -->
-        <div class="connect-section">
-            <a href="https://vijaysingh.cloud" target="_blank">
-                <img src="https://img.shields.io/badge/visit_my_Portfolio-%23000000.svg?style=for-the-badge&logo=firefox&logoColor=#FF7139" alt="Portfolio">
-            </a>
-            <a href="https://www.linkedin.com/in/vsingh55/" target="_blank">
-                <img src="https://img.shields.io/badge/Let's_connect_🤝-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
-            </a>
-            <a href="https://blogs.vijaysingh.cloud/" target="_blank">
-                <img src="https://img.shields.io/badge/-Visit_my_Blogs-034efc?style=for-the-badge&logo=hashnode&logoColor=white" alt="Blog">
-            </a>
-            <a href="https://x.com/vsingh_55" target="_blank">
-                <img src="https://img.shields.io/badge/-@Follow_me-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter">
-            </a>
-            <a href="mailto:vscit23@gmail.com">
-                <img src="https://img.shields.io/badge/-mail_me_-a284e8?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
-            </a>
-        </div>
+            <div class="connect-section">
+                <a href="https://vijaysingh.cloud" target="_blank">
+                    <img src="https://img.shields.io/badge/visit_my_Portfolio-%23000000.svg?style=for-the-badge&logo=firefox&logoColor=#FF7139" alt="Portfolio">
+                </a>
+                <a href="https://www.linkedin.com/in/vsingh55/" target="_blank">
+                    <img src="https://img.shields.io/badge/Let's_connect_🤝-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
+                </a>
+                <a href="https://blogs.vijaysingh.cloud/" target="_blank">
+                    <img src="https://img.shields.io/badge/-Visit_my_Blogs-034efc?style=for-the-badge&logo=hashnode&logoColor=white" alt="Blog">
+                </a>
+                <a href="https://x.com/vsingh_55" target="_blank">
+                    <img src="https://img.shields.io/badge/-@Follow_me-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter">
+                </a>
+                <a href="mailto:vscit23@gmail.com">
+                    <img src="https://img.shields.io/badge/-mail_me_-a284e8?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
+                </a>
+            </div>
     </div>
 
 
