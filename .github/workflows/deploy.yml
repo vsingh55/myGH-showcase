@@ -2,31 +2,37 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main  # Change this to your default branch if different
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Required permissions for GitHub Pages deployment
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4  # Updated to latest version
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5  # Updated to latest version
       with:
-        python-version: '3.x'  # Specify your Python version
+        python-version: '3.x'
 
     - name: Install dependencies
-      run: |
-        pip install -r requirements.txt  # If you have a requirements file
+      run: pip install -r requirements.txt
 
     - name: Run main.py
       run: python main.py
+      # Pass GitHub token to avoid API rate limits
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4  # ✅ Use v4 instead of v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./  # Adjust this to your output directory
+        publish_dir: ./
