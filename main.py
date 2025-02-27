@@ -73,6 +73,31 @@ def generate_html_table(repos):
     <meta charset="UTF-8">
     <title>GH RepoHub</title>
     <style>
+        /* ======== NEW HEADER CONTAINER STYLES ======== */
+        .header-container {
+            position: relative;  /* Enables absolute positioning for child elements */
+            margin-bottom: 30px;
+        }
+        
+        /* ======== CONNECT SECTION STYLES ======== */
+        .connect-section {
+            position: absolute;
+            top: 20px;          /* Distance from top of header */
+            right: 20px;        /* Distance from right edge */
+            display: flex;
+            gap: 8px;           /* Space between badges */
+            align-items: center;
+        }
+        
+        .connect-section img {
+            height: 28px;       /* Uniform height for all badges */
+            transition: transform 0.2s ease;
+        }
+        
+        .connect-section img:hover {
+            transform: translateY(-2px);  /* Hover effect */
+        }
+        
         body {
             margin: 0;
             padding: 20px;
