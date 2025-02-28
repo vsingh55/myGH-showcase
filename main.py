@@ -73,51 +73,38 @@ def generate_html_table(repos):
     <meta charset="UTF-8">
     <title>GH RepoHub</title>
     <style>
-        /* ======== NEW HEADER CONTAINER STYLES ======== */
-        .header-container {
-            position: relative;  /* Enables absolute positioning for child elements */
-            margin-bottom: 30px;
-        }
-        
-        /* ======== CONNECT SECTION STYLES ======== */
-        .connect-section {
-            position: absolute;
-            top: 20px;          /* Distance from top of header */
-            right: 20px;        /* Distance from right edge */
-            display: flex;
-            gap: 8px;           /* Space between badges */
-            align-items: center;
-        }
-        
-        .connect-section img {
-            height: 28px;       /* Uniform height for all badges */
-            transition: transform 0.2s ease;
-        }
-        
-        .connect-section img:hover {
-            transform: translateY(-2px);  /* Hover effect */
+        /* ======== THEME VARIABLES ======== */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --header-bg: linear-gradient(270deg, #0366d6, #28a745, #6f42c1);
+            --card-bg: #f8f9fa;
+            --border-color: #ddd;
+            --tag-bg: #f1f8ff;
         }
 
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --header-bg: linear-gradient(270deg, #004792, #1e7d34, #4b2d7f);
+            --card-bg: #2d2d2d;
+            --border-color: #404040;
+            --tag-bg: #2a4365;
+        }
+
+        /* ======== BASE STYLES ======== */
         body {
             margin: 0;
             padding: 20px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-        }
-        .connect-me {
-            margin-top: 20px;
-        }
-        .connect-me a {
-            margin-right: 10px;
-        }
-        
-        @keyframes title-gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
         }
 
+         /* ======== HEADER & BADGES ======== */
         .page-title {
-            background: linear-gradient(270deg, #0366d6, #28a745, #6f42c1);
+            background: var(--header-bg);
             background-size: 600% 600%;
             animation: title-gradient 8s ease infinite;
             color: white;
@@ -125,8 +112,76 @@ def generate_html_table(repos):
             text-align: center;
             border-radius: 8px;
             margin-bottom: 20px;
+            width: 100%;
         }
 
+        .badge-container {
+            width: 70%;
+            margin-left: auto;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .badge-container img {
+            height: 24px;
+            transition: transform 0.2s ease;
+        }
+
+        .badge-container img:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ======== THEME TOGGLE ======== */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: none;
+            background: var(--card-bg);
+            color: var(--text-color);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* ======== TITLE STYLES ======== */
+        .page-title {
+            background: var(--header-bg);
+            background-size: 600% 600%;
+            animation: title-gradient 8s ease infinite;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 0;
+            flex-grow: 1;
+            max-width: 70%;
+        }
+
+        # body {
+        #     margin: 0;
+        #     padding: 20px;
+        #     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        # }
+        # .connect-me {
+        #     margin-top: 20px;
+        # }
+        # .connect-me a {
+        #     margin-right: 10px;
+        # }
+        
+        # @keyframes title-gradient {
+        #     0% { background-position: 0% 50%; }
+        #     50% { background-position: 100% 50%; }
+        #     100% { background-position: 0% 50%; }
+        # }
+
+
+        /* ======== EXISTING COMPONENTS ======== */
         .main-container {
             display: flex;
             gap: 20px;
@@ -218,46 +273,69 @@ def generate_html_table(repos):
             font-size: 12px;
         }
 
-        @media (max-width: 1024px) {
-            .main-container {
-                flex-direction: column;
-            }
-            .filter-section {
-                position: static;
-                width: auto;
+        @media (max-width: 768px) {
+            .badge-container {
+                width: 100%;
+                justify-content: center;
             }
         }
+
+        #     .filter-section {
+        #         position: static;
+        #         width: auto;
+        #     }
+        # }
+        
+        # .filter-section {
+        #     background: var(--card-bg);
+        #     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        # }
+
+        # th {
+        #     background-color: var(--card-bg);
+        # }
+
+        # .tag {
+        #     background-color: var(--tag-bg);
+        # }
+
+        # input[type="text"] {
+        #     border: 1px solid var(--border-color);
+        # }
+        
     </style>
 </head>
 <body>
-    <div class="header-container">
-        <!-- ======== MAIN HEADER ======== -->
-        <h1 class="page-title">Cloud & DevOps Projects RepoHub</h1>
-        
-        <!-- ======== UPDATED CONNECT SECTION ======== -->
-            <div class="connect-section">
-                <a href="https://vijaysingh.cloud" target="_blank">
-                    <img src="https://img.shields.io/badge/visit_my_Portfolio-%23000000.svg?style=for-the-badge&logo=firefox&logoColor=#FF7139" alt="Portfolio">
-                </a>
-                <a href="https://www.linkedin.com/in/vsingh55/" target="_blank">
-                    <img src="https://img.shields.io/badge/Let's_connect_🤝-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
-                </a>
-                <a href="https://blogs.vijaysingh.cloud/" target="_blank">
-                    <img src="https://img.shields.io/badge/-Visit_my_Blogs-034efc?style=for-the-badge&logo=hashnode&logoColor=white" alt="Blog">
-                </a>
-                <a href="https://x.com/vsingh_55" target="_blank">
-                    <img src="https://img.shields.io/badge/-@Follow_me-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter">
-                </a>
-                <a href="mailto:vscit23@gmail.com">
-                    <img src="https://img.shields.io/badge/-mail_me_-a284e8?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
-                </a>
-            </div>
+    <!-- Title Section -->
+    <h1 class="page-title">Cloud & DevOps Projects RepoHub</h1>
+
+    <!-- Badges Container -->
+    <div class="badge-container">
+        <a href="https://vijaysingh.cloud" target="_blank">
+            <img src="https://img.shields.io/badge/visit_my_Portfolio-%23000000.svg?style=for-the-badge&logo=firefox&logoColor=#FF7139" alt="Portfolio">
+        </a>
+        <a href="https://www.linkedin.com/in/vsingh55/" target="_blank">
+            <img src="https://img.shields.io/badge/Let's_connect_🤝-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
+        </a>
+        <a href="https://blogs.vijaysingh.cloud/" target="_blank">
+            <img src="https://img.shields.io/badge/-Visit_my_Blogs-034efc?style=for-the-badge&logo=hashnode&logoColor=white" alt="Blog">
+        </a>
+        <a href="https://x.com/vsingh_55" target="_blank">
+            <img src="https://img.shields.io/badge/-@Follow_me-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter">
+        </a>
+        <a href="mailto:vscit23@gmail.com">
+            <img src="https://img.shields.io/badge/-mail_me_-a284e8?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
+        </a>
     </div>
 
 
+    <!-- Main Content -->
     <div class="main-container">
         <div class="filter-section">
             <h3>Filter by Technology:</h3>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()">🌓 Toggle Theme</button>
 """
     # Add filter checkboxes
     for tech in TECH_FILTERS:
@@ -307,14 +385,22 @@ def generate_html_table(repos):
         </div>
     </div>
 
-    <div class="connect-me">
-        <h3>Connect Me:</h3>
-        <a href="https://twitter.com/yourprofile" target="_blank"><img src="twitter_icon.png" alt="Twitter" /></a>
-        <a href="https://linkedin.com/in/yourprofile" target="_blank"><img src="linkedin_icon.png" alt="LinkedIn" /></a>
-        <a href="https://github.com/yourprofile" target="_blank"><img src="github_icon.png" alt="GitHub" /></a>
-    </div>
-
     <script>
+
+         // Theme Management
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+
+        // Existing search/filter functions 
         function searchTable() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const rows = document.querySelectorAll('tbody tr');
