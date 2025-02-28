@@ -85,11 +85,13 @@ def generate_html_table(repos):
 
         [data-theme="dark"] {
             --bg-color: #1a1a1a;
-            --text-color: #e0e0e0;
+            --text-color: #ffffff;
             --header-bg: linear-gradient(270deg, #004792, #1e7d34, #4b2d7f);
             --card-bg: #2d2d2d;
             --border-color: #404040;
             --tag-bg: #2a4365;
+            --table-bg: #2d2d2d;
+            --filter-bg: #3a3a3a;
         }
 
         /* ======== BASE STYLES ======== */
@@ -116,11 +118,11 @@ def generate_html_table(repos):
         }
 
         .badge-container {
-            width: 70%;
+            width: 50%;
             margin-left: auto;
             margin-bottom: 30px;
             display: flex;
-            gap: 8px;
+            gap: 5px;
             flex-wrap: wrap;
             justify-content: flex-end;
         }
@@ -159,7 +161,7 @@ def generate_html_table(repos):
             border-radius: 8px;
             margin: 0;
             flex-grow: 1;
-            max-width: 70%;
+            max-width: 100%;
         }
 
         # body {
