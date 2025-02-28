@@ -4,6 +4,7 @@
 [![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python)](https://python.org)
 [![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](LICENSE)
 
+![alt text](image.png)
 ## 🌟 Features
 - Dynamic GitHub repository showcase
 - Automatic content updates via GitHub Actions
