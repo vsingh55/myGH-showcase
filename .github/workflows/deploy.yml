@@ -34,7 +34,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4  # ✅ Use v4 instead of v3
+      uses: peaceiris/actions-gh-pages@v4  
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./
+        cname: gh.showcase.vijaysingh.cloud  
+        publish_branch: gh-pages
