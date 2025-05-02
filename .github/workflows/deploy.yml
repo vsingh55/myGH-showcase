@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: '0 0 * * *'  # Every day at 00:00 UTC
+    - cron: '30 18 * * *'  # Every day at 18:30 UTC (Midnight IST)
 
 jobs:
   build:
