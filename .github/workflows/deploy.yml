@@ -25,18 +25,20 @@ jobs:
         python-version: '3.x'
 
     - name: Install dependencies
-      run: pip install -r requirements.txt
+      run: |
+        pip install -r requirements.txt
+        pip install -e .
 
-    - name: Run main.py
-      run: python main.py
-      # Pass GitHub token to avoid API rate limits
+    - name: Generate HTML
+      run: python -m github_showcase
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4  
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./
-        cname: gh.showcase.vijaysingh.cloud  
+        cname: gh.showcase.vijaysingh.cloud
         publish_branch: gh-pages
+        force_orphan: true

@@ -77,7 +77,7 @@ def generate_html_table(repos: List[Dict]) -> str:
             overflow-x: hidden;
             font-size: 1rem;
             margin: 0;
-            padding: 0;
+            padding: 0.3rem;
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
@@ -88,12 +88,12 @@ def generate_html_table(repos: List[Dict]) -> str:
             background-size: 200% 200%;
             animation: gradient-move 8s ease-in-out infinite;
             color: white;
-            padding: 2.5rem 1rem 2rem 1rem;
+            padding: 0.6rem 1rem 0.6rem 1rem;
             text-align: center;
             border-radius: 12px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.5rem;
             width: 100%;
-            font-size: 3.2rem;
+            font-size: 2.8rem;
             font-weight: 900;
             letter-spacing: 1px;
             box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
@@ -120,12 +120,12 @@ def generate_html_table(repos: List[Dict]) -> str:
         .badge-container {
             width: 100%;
             margin-left: auto;
-            margin-bottom: 2rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
             display: flex;
             gap: 0.75rem;
             flex-wrap: wrap;
             justify-content: flex-end;
-            margin-top: 2rem;
         }
         .badge-container img {
             height: 1.6rem;

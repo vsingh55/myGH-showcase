@@ -44,7 +44,7 @@ def get_all_repositories() -> List[Dict]:
             print(f"Error fetching repositories: {str(e)}")
             raise
 
-    repos.sort(key=lambda r: r.get('updated_at', ''), reverse=True)
+    repos.sort(key=lambda r: r.get('pushed_at', ''), reverse=True)
     debug_print_repos(repos)
     return repos
 

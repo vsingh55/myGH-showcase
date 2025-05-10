@@ -19,6 +19,7 @@
     - [Credentials Needed](#credentials-needed)
   - [Installation](#installation)
     - [Quick Start](#quick-start)
+    - [Setting Up Your Own Website](#setting-up-your-own-website)
   - [Configuration](#configuration)
   - [Deployment](#deployment)
   - [Screenshots](#screenshots)
@@ -31,6 +32,10 @@
     - [Common Issues and Solutions](#common-issues-and-solutions)
   - [Contributing](#contributing)
     - [Contribution Process](#contribution-process)
+  - [What's New in v2.0.0](#whats-new-in-v200)
+    - [Major Improvements](#major-improvements)
+    - [Technical Upgrades](#technical-upgrades)
+  - [Blog🔗](#blog)
   - [License](#license)
 
 </details>
@@ -104,15 +109,68 @@ myGH-showcase/
 git clone https://github.com/vsingh55/myGH-showcase.git
 cd myGH-showcase
 
-# Install dependencies
-pip install -r requirements.txt
+# Create and activate virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install package in development mode
+pip install -e .
 
 # Run the generator locally
-python main.py
+python -m github_showcase
 
 # Preview the generated site
 python -m http.server 8000  # Access at http://localhost:8000
 ```
+
+### Setting Up Your Own Website
+
+After testing locally, follow these steps to set up your own GitHub Pages website:
+
+1. **Fork and Clone**:
+   ```bash
+   # Fork this repository on GitHub
+   # Then clone your fork
+   git clone https://github.com/YOUR-USERNAME/myGH-showcase.git
+   cd myGH-showcase
+   ```
+
+2. **Update Configuration**:
+   - Edit `src/github_showcase/config/settings.py`:
+     ```python
+     GITHUB_USERNAME = "your-username"  # Your GitHub username
+     EXCLUDE_REPOS = []  # Add repositories to exclude
+     BLOG_BASE_URL = "your-blog-url"  # Your blog URL (optional)
+     TECH_FILTERS = ["your", "tech", "stack"]  # Your technology stack
+     ```
+
+3. **Enable GitHub Pages**:
+   - Go to your repository's Settings
+   - Navigate to "Pages" in the sidebar
+   - Under "Source", select "GitHub Actions"
+
+4. **Set Up Custom Domain** (Optional):
+   - In repository Settings → Pages
+   - Add your custom domain
+   - Update `cname` in `.github/workflows/deploy.yml`:
+     ```yaml
+     cname: your-domain.com
+     ```
+
+5. **Push Changes**:
+   ```bash
+   git add .
+   git commit -m "Configure for my website"
+   git push origin main
+   ```
+
+6. **Verify Deployment**:
+   - Wait for GitHub Actions to complete
+   - Your site will be available at:
+     - `https://YOUR-USERNAME.github.io/myGH-showcase/` (default)
+     - `https://your-domain.com` (if using custom domain)
+
+**Note**: The first deployment might take a few minutes. You can monitor the progress in the "Actions" tab of your repository.
 
 ## Configuration
 The application can be configured by modifying the variables in `main.py`:
@@ -126,16 +184,6 @@ TECH_FILTERS = [  # Technologies for filtering system
     "azure", "aws", "python", "kubernetes", 
     # Add or remove technologies as needed
 ]
-```
-
-Theme customization can be achieved by modifying the CSS variables in the HTML template section of `main.py`:
-
-```css
-:root {
-    --bg-color: #ffffff;
-    --text-color: #333333;
-    /* Customize additional variables */
-}
 ```
 
 ## Deployment
@@ -201,20 +249,20 @@ Deployment is fully automated through GitHub Actions. The workflow is configured
 ## Contributing
 The project welcomes contributions in several key areas:
 
-1. **Code Structure Improvement**
-   - Separate concerns into modular components
-   - Implement template system instead of string concatenation
-   - Create a configuration manager for easier customization
+1. **Feature Enhancements**
+   - Add new filtering options
+   - Implement additional theme variations
+   - Create new visualization components
 
-2. **Theme System Enhancement**
-   - Complete dark mode implementation
-   - Add more theme options
-   - Improve accessibility features
+2. **Documentation**
+   - Improve code documentation
+   - Add more examples
+   - Create tutorials
 
-3. **Feature Additions**
-   - Repository statistics visualization
-   - Contribution graph integration
-   - Custom sorting options for repositories
+3. **Testing**
+   - Add unit tests
+   - Implement integration tests
+   - Create test documentation
 
 ### Contribution Process
 1. Fork the repository
@@ -222,6 +270,41 @@ The project welcomes contributions in several key areas:
 3. Commit changes: `git commit -m 'Add some feature'`
 4. Push to branch: `git push origin feat/your-feature`
 5. Open a Pull Request following the template
+
+## What's New in v2.0.0
+
+### Major Improvements
+1. **Modular Package Structure**
+   - Organized code into a proper Python package
+   - Separated concerns into distinct modules
+   - Improved maintainability and scalability
+
+2. **Enhanced Configuration**
+   - Centralized settings in `config/settings.py`
+   - Easy customization of GitHub username, filters, and blog mapping
+   - Better environment variable handling
+
+3. **Improved Code Organization**
+   - `core/`: Core HTML generation logic
+   - `utils/`: Utility functions for API, rate limiting, and blog mapping
+   - `config/`: Centralized configuration management
+
+4. **Development Experience**
+   - Added proper package installation with `setup.py`
+   - Improved development workflow with `pip install -e .`
+   - Better dependency management
+
+5. **Documentation**
+   - Updated installation and setup instructions
+   - Added detailed configuration guide
+   - Improved contribution guidelines
+
+### Technical Upgrades
+- Migrated from single-file structure to modular package
+- Implemented proper Python package structure
+- Added development mode installation
+- Enhanced error handling and logging
+- Improved code reusability and maintainability
 
 ## Blog🔗
 [To visit blog click here](https://blogs.vijaysingh.cloud/mygh-showcase)
@@ -231,7 +314,7 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 
 ---
 
-**Maintainer:** [Vijay Kumar Singh](https://github.com/vsingh55)  
+**Maintainer:** [Vijay Kumar Singh](https://vijaysingh.cloud/)  
 **Contact:** vscit23@gmail.com
 
-Let's build an amazing repository showcase together! 🚀
+>**Let's build an amazing repository showcase together! 🚀**

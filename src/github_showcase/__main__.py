@@ -1,6 +1,12 @@
 """
 Main entry point for GitHub Showcase
 """
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv(override=True)  # override=True ensures .env values take precedence
+
 from .utils.github_api import get_all_repositories
 from .core.html_generator import generate_html_table
 from .config.settings import OUTPUT_FILE

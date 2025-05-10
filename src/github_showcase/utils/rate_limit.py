@@ -18,7 +18,7 @@ class RateLimitHandler:
         headers = {'Accept': 'application/vnd.github.v3+json'}
         github_token = os.getenv('GITHUB_TOKEN')
         if github_token:
-            headers['Authorization'] = f'token {github_token}'
+            headers['Authorization'] = f'Bearer {github_token}'
         return headers
 
     def handle_rate_limit(self, response: requests.Response) -> Optional[int]:
