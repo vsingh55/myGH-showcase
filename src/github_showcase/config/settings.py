@@ -26,7 +26,7 @@ BLOG_MAPPING = {
     "NBA-Game-Day-Notification-Alert": "gdn",
     "DevSecOps-Pipeline": "project-devsecops-pipeline-pro",
     "Weather-Dashboard": "weather-dashboard",
-    "Linux-for-LFCS": "series/linux-a2z,
+    "Linux-for-LFCS": "series/linux-a2z",
     "Automated-AKS-Cluster-Provisioning-Using-Terraform-and-Service-Principal": "automated-aks-cluster-provisioning-using-terraform-and-service-principal",
     "3-tier-Architecture-Deployment-across-Multiple-Environments": "3-tier-architecture-deployment-across-multiple-environments",
     "CloudUploader_CLI": "ltc-clouduploadercli",
