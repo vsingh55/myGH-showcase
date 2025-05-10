@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GH RepoHub</title>
+    <style>
+        :root {
+            --bg-color: #f5f6fa;
+            --text-color: #23272f;
+            --header-bg: linear-gradient(270deg, #4e54c8, #8f94fb);
+            --card-bg: #fff;
+            --border-color: #e0e0e0;
+            --tag-bg: #e3eafc;
+            --table-bg: #fff;
+            --filter-bg: #f0f2f7;
+            --search-border: #4e54c8;
+            --table-header-bg: #f0f2f7;
+            --table-row-hover: #f5f5f5;
+            --accent: #4e54c8;
+        }
+        [data-theme="dark"] {
+            --bg-color: #181A20;
+            --text-color: #F1F1F1;
+            --header-bg: linear-gradient(270deg, #23286b, #1e7d34, #4b2d7f);
+            --card-bg: #23242b;
+            --border-color: #23242b;
+            --tag-bg: #232d3b;
+            --table-bg: #23242b;
+            --filter-bg: #23242b;
+            --search-border: #8f94fb;
+            --table-header-bg: #232d3b;
+            --table-row-hover: #232d3b;
+            --accent: #8f94fb;
+        }
+        html {
+            font-size: 18px;
+        }
+        body {
+            max-width: 100vw;
+            overflow-x: hidden;
+            font-size: 1rem;
+            margin: 0;
+            padding: 0.3rem;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .page-title {
+            background: linear-gradient(90deg, #ff9966, #ff5e62, #36d1c4, #5b86e5, #36d1c4, #ff9966);
+            background-size: 200% 200%;
+            animation: gradient-move 8s ease-in-out infinite;
+            color: white;
+            padding: 0.6rem 1rem 0.6rem 1rem;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+            width: 100%;
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
+            position: relative;
+        }
+        @keyframes gradient-move {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .page-title .animated-text {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff9966, #36d1c4, #5b86e5, #ff5e62);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: text-gradient-move 6s ease-in-out infinite;
+        }
+        @keyframes text-gradient-move {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .badge-container {
+            width: 100%;
+            margin-left: auto;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .badge-container img {
+            height: 1.6rem;
+            transition: transform 0.2s ease;
+        }
+        .badge-container img:hover {
+            transform: translateY(-2px) scale(1.08);
+        }
+        .theme-toggle {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            padding: 0.75rem 1.2rem;
+            border-radius: 24px;
+            border: none;
+            background: var(--card-bg);
+            color: var(--text-color);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            z-index: 1000;
+            font-weight: 600;
+        }
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            gap: 2rem;
+            width: 100vw;
+            max-width: none;
+            margin: 0;
+            padding: 0 0.5rem 2rem 0.5rem;
+            align-items: flex-start;
+        }
+        .filter-section {
+            min-width: 220px;
+            background: var(--filter-bg);
+            padding: 1.5rem 1rem 1rem 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+            height: fit-content;
+            color: var(--text-color);
+            font-size: 1.05rem;
+            font-weight: 500;
+            border-right: 1px solid var(--border-color);
+            flex-shrink: 0;
+            position: sticky;
+            top: 1.5rem;
+            z-index: 10;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .content-section {
+            flex: 1 1 0%;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+            padding: 2rem 2rem 2rem 2rem;
+            min-width: 0;
+        }
+        .info-banner, #searchInput {
+            max-width: 900px;
+            margin: 0 auto 1.2rem auto;
+            display: block;
+        }
+        table {
+            table-layout: auto;
+            width: 100%;
+            overflow-x: auto;
+            font-size: 1rem;
+            border-collapse: collapse;
+            margin-top: 1.2rem;
+            background: var(--table-bg);
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+            border-radius: 8px;
+        }
+        th, td {
+            font-size: 1rem;
+            padding: 0.8rem 0.6rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+        th {
+            background-color: var(--table-header-bg);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        tr:hover {
+            background-color: var(--table-row-hover);
+        }
+        .info-banner {
+            background-color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.2rem;
+            color: #fff;
+            font-size: 1.08rem;
+            font-weight: 500;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+        }
+        [data-theme="dark"] .info-banner {
+            background-color: var(--accent);
+            border: 1px solid var(--accent);
+            color: #181A20;
+        }
+        .filter-group {
+            margin: 0.7rem 0;
+        }
+        .filter-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+        input[type="text"] {
+            padding: 0.7rem;
+            width: 100%;
+            margin-bottom: 1.2rem;
+            border: 2px solid var(--search-border);
+            border-radius: 6px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .tag {
+            display: inline-block;
+            background-color: var(--tag-bg);
+            padding: 0.4rem 0.8rem;
+            margin: 2px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: var(--text-color);
+            font-weight: 500;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        th:nth-child(1), td:nth-child(1) {
+            min-width: 120px;
+            width: 13%;
+        }
+        th:nth-child(4), td:nth-child(4) {
+            min-width: 260px;
+            width: 28%;
+        }
+        th:nth-child(2), td:nth-child(2) {
+            min-width: 300px;
+            width: 35%;
+        }
+        @media (max-width: 900px) {
+            html {
+                font-size: 14px;
+            }
+            .main-container {
+                flex-direction: column;
+                gap: 0;
+                padding: 0 0.5rem;
+                align-items: stretch;
+            }
+            .content-section, .filter-section {
+                padding: 0.8rem 0.2rem;
+            }
+            .filter-section {
+                min-width: 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            th:nth-child(1), td:nth-child(1) {
+                min-width: 100px;
+                width: 18%;
+            }
+            th:nth-child(4), td:nth-child(4) {
+                min-width: 120px;
+                width: 25%;
+            }
+        }
+        @media (max-width: 600px) {
+            html {
+                font-size: 15px;
+            }
+            .page-title {
+                font-size: 1.2rem;
+                padding: 1rem 0.2rem;
+            }
+            th, td {
+                font-size: 0.95rem;
+                padding: 0.5rem 0.2rem;
+            }
+        }
+        @media (min-width: 1800px) {
+            .main-container {
+                max-width: 1700px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Title Section -->
+    <h1 class="page-title"><span class="animated-text">My GitHub Portfolio</span></h1>
+
+    <!-- Badges Container -->
+    <div class="badge-container">
+        <a href="https://vijaysingh.cloud" target="_blank">
+            <img src="https://img.shields.io/badge/visit_my_Portfolio-%23000000.svg?style=for-the-badge&logo=firefox&logoColor=#FF7139" alt="Portfolio">
+        </a>
+        <a href="https://www.linkedin.com/in/vsingh55/" target="_blank">
+            <img src="https://img.shields.io/badge/Let's_connect_🤝-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
+        </a>
+        <a href="https://blogs.vijaysingh.cloud/" target="_blank">
+            <img src="https://img.shields.io/badge/-Visit_my_Blogs-034efc?style=for-the-badge&logo=hashnode&logoColor=white" alt="Blog">
+        </a>
+        <a href="https://x.com/vsingh_55" target="_blank">
+            <img src="https://img.shields.io/badge/-@Follow_me-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter">
+        </a>
+        <a href="mailto:vscit23@gmail.com">
+            <img src="https://img.shields.io/badge/-mail_me_-a284e8?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="filter-section">
+            <h3>Filter by Technology:</h3>
+            <div class="filter-group"><label><input type="checkbox" value="azure"> Azure</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="aws"> Aws</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="gcp"> Gcp</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="docker"> Docker</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="kubernetes"> Kubernetes</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="terraform"> Terraform</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="ansible"> Ansible</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="devsecops"> DevSecOps</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="gitlab"> Gitlab</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="github-actions"> GitHub Actions</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="ci/cd"> CI/CD</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="jenkins"> Jenkins</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="elk"> Elk</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="prometheus"> Prometheus</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="grafana"> Grafana</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="maven"> Maven</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="trivy"> Trivy</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="sonarqube"> Sonarqube</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="linux"> Linux</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="git"> Git</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="slack"> Slack</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="jira"> Jira</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="python"> Python</label></div>
+            <div class="filter-group"><label><input type="checkbox" value="shell-scripting"> Shell Scripting</label></div>
+
+        </div>
+
+        <div class="content-section">
+            <div class="info-banner">
+                💡 Click on project names to view their respective GH repositories. Each project includes detailed documentation, code, setup guide & visit Blog page to detailed implementation steps.
+            </div>
+
+            <input type="text" id="searchInput" placeholder="Search across all content..." onkeyup="searchTable()">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Website</th>
+                        <th>Tags</th>
+                        <th>Blog</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-tags="css,github-actions,github-pages,html,python">
+                        <td><a href="https://github.com/vsingh55/myGH-showcase" target="_blank" title="View GitHub Repository">myGH-showcase</a></td>
+                        <td> Auto-updating portfolio showcasing Cloud/DevOps projects - Dynamically displays your GitHub repositories with tech filters, dark mode, and CI/CD-powered updates. Built with Python + GitHub Actions.</td>
+                        <td><a href="https://vijaysingh.cloud/projects/202501-my-gh-showcase/" target="_blank">Website</a></td>
+                        <td><span class="tag">css</span><span class="tag">github-actions</span><span class="tag">github-pages</span><span class="tag">html</span><span class="tag">python</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="aws,aws-athena,aws-cloudshell,aws-glue,aws-s3,boto3,devopsallstarchallenge,python">
+                        <td><a href="https://github.com/vsingh55/NBA-Analytics-Data-Lake" target="_blank" title="View GitHub Repository">NBA-Analytics-Data-Lake</a></td>
+                        <td>A sports analytics data lake leveraging AWS S3 for storage, AWS Glue for data cataloging, and AWS Athena for querying. Python scripts are used for data ingestion and manages the infrastructure.</td>
+                        <td><a href="https://vijaysingh.cloud/projects/202504-nba-data-lake/" target="_blank">Website</a></td>
+                        <td><span class="tag">aws</span><span class="tag">aws-athena</span><span class="tag">aws-cloudshell</span><span class="tag">aws-glue</span><span class="tag">aws-s3</span><span class="tag">boto3</span><span class="tag">devopsallstarchallenge</span><span class="tag">python</span></td>
+                        <td><a href="https://blogs.vijaysingh.cloud/data-lake" target="_blank">Read Blog</a></td>
+                    </tr>
+                    <tr data-tags="aws,aws-eventbridge,aws-iam-policies,aws-lambda,aws-sns,python">
+                        <td><a href="https://github.com/vsingh55/NBA-Game-Day-Notification-Alert" target="_blank" title="View GitHub Repository">NBA-Game-Day-Notification-Alert</a></td>
+                        <td>An event-driven application that retrieves live NBA game updates using the Sports API and sends notifications via AWS SNS. The system utilizes AWS Lambda for processing, EventBridge for scheduling.</td>
+                        <td><a href="https://vijaysingh.cloud/projects/202503-gdn/" target="_blank">Website</a></td>
+                        <td><span class="tag">aws</span><span class="tag">aws-eventbridge</span><span class="tag">aws-iam-policies</span><span class="tag">aws-lambda</span><span class="tag">aws-sns</span><span class="tag">python</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="automation,bash,devsecops,docker,dockerhub,gcp,gmail,graphana,kubernetes,prometheus,security,sonarqube,terraform,terraform-module,trivy">
+                        <td><a href="https://github.com/vsingh55/DevSecOps-Pipeline" target="_blank" title="View GitHub Repository">DevSecOps-Pipeline</a></td>
+                        <td>DevSecOps Pipeline ensures secure, automated, and continuously monitored CI/CD processes on GCloud. It integrates security by design, leverages automation through Jenkins and Docker, and employs continuous monitoring with Prometheus and Grafana to maintain application and infrastructure health.</td>
+                        <td><a href="https://vijaysingh.cloud/projects/202403-cicd/" target="_blank">Website</a></td>
+                        <td><span class="tag">automation</span><span class="tag">bash</span><span class="tag">devsecops</span><span class="tag">docker</span><span class="tag">dockerhub</span><span class="tag">gcp</span><span class="tag">gmail</span><span class="tag">graphana</span><span class="tag">kubernetes</span><span class="tag">prometheus</span><span class="tag">security</span><span class="tag">sonarqube</span><span class="tag">terraform</span><span class="tag">terraform-module</span><span class="tag">trivy</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="api,aws-s3,cloud,devops,python">
+                        <td><a href="https://github.com/vsingh55/Weather-Dashboard" target="_blank" title="View GitHub Repository">Weather-Dashboard</a></td>
+                        <td>A Python-based solution that fetches real-time weather data from the OpenWeather API and stores it in AWS S3 for analysis and visualization.</td>
+                        <td></td>
+                        <td><span class="tag">api</span><span class="tag">aws-s3</span><span class="tag">cloud</span><span class="tag">devops</span><span class="tag">python</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="aws,aws-athena,aws-glue,aws-lambda-python,aws-sns,boto3-script,cicd,containerization,docker,eventbridge-scheduler,iac-terraform,python,s3-bucket">
+                        <td><a href="https://github.com/vsingh55/AWS-NBA-DevOpsAllStars-Challenge" target="_blank" title="View GitHub Repository">AWS-NBA-DevOpsAllStars-Challenge</a></td>
+                        <td>A showcase of my projects for the NBA-focused  #DevOpsAllStarsChallenge 2025 by Cozy Cloud Crew. Each project showcases hands-on solutions to 30-days-DevOps challenges, utilizing AWS services, automation using python,  Infrastructure as Code (Terraform), Containers (Docker) &amp; comprehensive C I/CD .</td>
+                        <td></td>
+                        <td><span class="tag">aws</span><span class="tag">aws-athena</span><span class="tag">aws-glue</span><span class="tag">aws-lambda-python</span><span class="tag">aws-sns</span><span class="tag">boto3-script</span><span class="tag">cicd</span><span class="tag">containerization</span><span class="tag">docker</span><span class="tag">eventbridge-scheduler</span><span class="tag">iac-terraform</span><span class="tag">python</span><span class="tag">s3-bucket</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="lfcs-certification-exam,linux,notes,practice">
+                        <td><a href="https://github.com/vsingh55/Linux-for-LFCS" target="_blank" title="View GitHub Repository">Linux-for-LFCS</a></td>
+                        <td>Consist notes &amp; praactice question to prepare the LFCS (Linux Foundation Certified System Administrator) exam.</td>
+                        <td><a href="https://blogs.vijaysingh.cloud/series/linux-a2z" target="_blank">Website</a></td>
+                        <td><span class="tag">lfcs-certification-exam</span><span class="tag">linux</span><span class="tag">notes</span><span class="tag">practice</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="aks-kubernetes-cluster,azure,azure-key-vault,azure-service-principal,service-principal,shell-scripting,terraform,terraform-backend,terraform-module">
+                        <td><a href="https://github.com/vsingh55/Automated-AKS-Cluster-Provisioning-Using-Terraform-and-Service-Principal" target="_blank" title="View GitHub Repository">Automated-AKS-Cluster-Provisioning-Using-Terraform-and-Service-Principal</a></td>
+                        <td>Provisioning of an AKS cluster in a streamlined and secure manner using a service principal. The kubeconfig and service principal will be generated post-terraform plan, and the secret will be uploaded to Azure Key Vault for subsequent usage.</td>
+                        <td><a href="https://vijaysingh.cloud/projects/202404-az-aks-deployment-using-terraform/" target="_blank">Website</a></td>
+                        <td><span class="tag">aks-kubernetes-cluster</span><span class="tag">azure</span><span class="tag">azure-key-vault</span><span class="tag">azure-service-principal</span><span class="tag">service-principal</span><span class="tag">shell-scripting</span><span class="tag">terraform</span><span class="tag">terraform-backend</span><span class="tag">terraform-module</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="3tierdeployment,aks-kubernetes-cluster,azure,cicd,cloudinary,docker,java-app,jenkins-pipeline,mapbox,mongodb-atlas,multienviroment,multienvironment,scripts,sonarqube,terraform,terraform-module,terraform-workspaces,trivy">
+                        <td><a href="https://github.com/vsingh55/3-tier-Architecture-Deployment-across-Multiple-Environments" target="_blank" title="View GitHub Repository">3-tier-Architecture-Deployment-across-Multiple-Environments</a></td>
+                        <td>YelpCamp(3-tier architechture) application deployed across various environments, deployment process covering local, containerized, and Azure Kubernetes Service (AKS)  using modular terraform code , CICD perfomred on jenkins.</td>
+                        <td><a href="https://vijaysingh.cloud/projects/202401-deploying-and-scaling-3-tier-app/" target="_blank">Website</a></td>
+                        <td><span class="tag">3tierdeployment</span><span class="tag">aks-kubernetes-cluster</span><span class="tag">azure</span><span class="tag">cicd</span><span class="tag">cloudinary</span><span class="tag">docker</span><span class="tag">java-app</span><span class="tag">jenkins-pipeline</span><span class="tag">mapbox</span><span class="tag">mongodb-atlas</span><span class="tag">multienviroment</span><span class="tag">multienvironment</span><span class="tag">scripts</span><span class="tag">sonarqube</span><span class="tag">terraform</span><span class="tag">terraform-module</span><span class="tag">terraform-workspaces</span><span class="tag">trivy</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="k8s-at-home,kubernetes,kubernetes-setup,virtualization">
+                        <td><a href="https://github.com/vsingh55/Kubernetes-HomeLab-From-Scratch" target="_blank" title="View GitHub Repository">Kubernetes-HomeLab-From-Scratch</a></td>
+                        <td>It documents my complete journey of building a Kubernetes homelab from scratch. Starting with  virtualization on Fedora, it guides to setting up VMs, building a Kubernetes cluster, and configuring it with kubeCNI for networking. Finally, it includes steps to deploy your own applications, creating a fully functional k8s cluster.</td>
+                        <td></td>
+                        <td><span class="tag">k8s-at-home</span><span class="tag">kubernetes</span><span class="tag">kubernetes-setup</span><span class="tag">virtualization</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="alerts,azuremonitor,linuxvm,loganalyticsworkspace,webapps,windowserver">
+                        <td><a href="https://github.com/vsingh55/Azure-Monitor-Deploy-and-Configure" target="_blank" title="View GitHub Repository">Azure-Monitor-Deploy-and-Configure</a></td>
+                        <td>Designed and implemented a fully automated infrastructure monitoring solution on Azure using Terraform. The project centered around the deployment and configuration of Azure Monitor, enabling centralized log management, real-time alerting, and proactive observability for critical Azure resources.</td>
+                        <td><a href="https://vijaysingh.cloud/projects/202410-azmonitoring/" target="_blank">Website</a></td>
+                        <td><span class="tag">alerts</span><span class="tag">azuremonitor</span><span class="tag">linuxvm</span><span class="tag">loganalyticsworkspace</span><span class="tag">webapps</span><span class="tag">windowserver</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="">
+                        <td><a href="https://github.com/vsingh55/AzureLockdown-Securing-Workloads-with-Azure-Virtual-Network-Controls" target="_blank" title="View GitHub Repository">AzureLockdown-Securing-Workloads-with-Azure-Virtual-Network-Controls</a></td>
+                        <td>The project focuses on network isolation, traffic control, protection against malicious traffic, routing, and DNS configuration to enhance the security posture of the network.</td>
+                        <td></td>
+                        <td></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="azure,azure-blob-storage,bash,bash-script">
+                        <td><a href="https://github.com/vsingh55/CloudUploader_CLI" target="_blank" title="View GitHub Repository">CloudUploader_CLI</a></td>
+                        <td>It contains bash script that provides an efficient way to upload files from your local system to Azure Blob Storage.</td>
+                        <td><a href="https://vijaysingh.cloud/projects/202412-clouduploadercli/" target="_blank">Website</a></td>
+                        <td><span class="tag">azure</span><span class="tag">azure-blob-storage</span><span class="tag">bash</span><span class="tag">bash-script</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="argocd,azure,azure-devops,azure-kubernetes-service,azurepipeline,bash-script,docker,terrraform,yaml">
+                        <td><a href="https://github.com/vsingh55/AzureDevOps-CI-CD" target="_blank" title="View GitHub Repository">AzureDevOps-CI-CD</a></td>
+                        <td>CI/CD pipeline for Microservices using Azure DevOps and ArgoCD to deploy microservices. The pipeline handles building and pushing Docker images to Azure Container Registry and deploying them to a Kubernetes cluster managed by ArgoCD. </td>
+                        <td><a href="https://vijaysingh.cloud/projects/202402-vote-app-azurecicd/" target="_blank">Website</a></td>
+                        <td><span class="tag">argocd</span><span class="tag">azure</span><span class="tag">azure-devops</span><span class="tag">azure-kubernetes-service</span><span class="tag">azurepipeline</span><span class="tag">bash-script</span><span class="tag">docker</span><span class="tag">terrraform</span><span class="tag">yaml</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="devops,devops-tools,jenkins,monitoring,scripts">
+                        <td><a href="https://github.com/vsingh55/DevOps-Toolbox" target="_blank" title="View GitHub Repository">DevOps-Toolbox</a></td>
+                        <td>This repository contains a collection of scripts and tools for common DevOps tasks. Whether you’re setting up monitoring, scheduling cron jobs, or installing essential tools, this repo has you covered.</td>
+                        <td></td>
+                        <td><span class="tag">devops</span><span class="tag">devops-tools</span><span class="tag">jenkins</span><span class="tag">monitoring</span><span class="tag">scripts</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="">
+                        <td><a href="https://github.com/vsingh55/Terraform-Modules-Azure" target="_blank" title="View GitHub Repository">Terraform-Modules-Azure</a></td>
+                        <td>It contains terraform modules to create resources easily and follows proper naming convention. </td>
+                        <td></td>
+                        <td></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="aws,awsbackend,multienvironment,terraform,terraform-module">
+                        <td><a href="https://github.com/vsingh55/AWS-MultiEnvDeploy" target="_blank" title="View GitHub Repository">AWS-MultiEnvDeploy</a></td>
+                        <td>Provisioning infrastructure for multiple environments using a Terraform module with a remote backend on AWS.</td>
+                        <td><a href="https://vijaysingh.cloud/projects/202409-aws-multienv/" target="_blank">Website</a></td>
+                        <td><span class="tag">aws</span><span class="tag">awsbackend</span><span class="tag">multienvironment</span><span class="tag">terraform</span><span class="tag">terraform-module</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="azure,azure-blob-storage,azure-storage">
+                        <td><a href="https://github.com/vsingh55/Azure-Storage-Solutions" target="_blank" title="View GitHub Repository">Azure-Storage-Solutions</a></td>
+                        <td>It contains exercises related to azure storage based on scenarios. It will be helpfull to excel in azure storage.</td>
+                        <td></td>
+                        <td><span class="tag">azure</span><span class="tag">azure-blob-storage</span><span class="tag">azure-storage</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="bash-scripting,e-commerce-website,linux-firewall,shell-script">
+                        <td><a href="https://github.com/vsingh55/LAMP-Stack-E-commerce-App-Deployment" target="_blank" title="View GitHub Repository">LAMP-Stack-E-commerce-App-Deployment</a></td>
+                        <td>This sproject automates the setup of a LAMP (Linux, Apache, MySQL, PHP) stack for hosting an e-commerce application. It installs and configures MariaDB for database management, sets up the web server with Apache, and deploys the e-commerce application code.</td>
+                        <td></td>
+                        <td><span class="tag">bash-scripting</span><span class="tag">e-commerce-website</span><span class="tag">linux-firewall</span><span class="tag">shell-script</span></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="">
+                        <td><a href="https://github.com/vsingh55/Azure-Resource-Manager-templetes" target="_blank" title="View GitHub Repository">Azure-Resource-Manager-templetes</a></td>
+                        <td>It contains ARM templetes ready to deploy, use it while deployment.</td>
+                        <td></td>
+                        <td></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                    <tr data-tags="">
+                        <td><a href="https://github.com/vsingh55/Python_for_DevOps" target="_blank" title="View GitHub Repository">Python_for_DevOps</a></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Coming Soon</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()">🌓 Toggle Theme</button>
+
+    <script>
+        // Theme Management
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+
+        // Search functionality
+        function searchTable() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const rowText = row.textContent.toLowerCase();
+                row.style.display = rowText.includes(searchTerm) ? '' : 'none';
+            });
+        }
+
+        // Filter functionality
+        document.querySelectorAll('.filter-section input').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const selectedTech = Array.from(document.querySelectorAll('.filter-section input:checked'))
+                    .map(cb => cb.value.toLowerCase());
+
+                const rows = document.querySelectorAll('tbody tr');
+                rows.forEach(row => {
+                    const tags = row.getAttribute('data-tags').split(',');
+                    const hasTech = selectedTech.length === 0 ||
+                                  selectedTech.some(tech => tags.includes(tech));
+                    row.style.display = hasTech ? '' : 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
