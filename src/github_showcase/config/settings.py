@@ -22,6 +22,19 @@ BLOG_MAPPING = {
     # Add your blog mappings here
     # Format: "repository-name": "blog-slug"
     "NBA-Analytics-Data-Lake": "data-lake",
+    "myGH-showcase": "mygh-showcase",
+    "NBA-Game-Day-Notification-Alert": "gdn",
+    "DevSecOps-Pipeline": "project-devsecops-pipeline-pro",
+    "Weather-Dashboard": "weather-dashboard",
+    "Linux-for-LFCS": "series/linux-a2z,
+    "Automated-AKS-Cluster-Provisioning-Using-Terraform-and-Service-Principal": "automated-aks-cluster-provisioning-using-terraform-and-service-principal",
+    "3-tier-Architecture-Deployment-across-Multiple-Environments": "3-tier-architecture-deployment-across-multiple-environments",
+    "CloudUploader_CLI": "ltc-clouduploadercli",
+    "AzureDevOps-CI-CD": "vote-app-deploy",
+    "AWS-MultiEnvDeploy": "aws-multi-env-deploy",
+    "Azure-Resource-Manager-templetes": "series/azure-a2z",
+
+    #"Azure-Monitor-Deploy-and-Configure": "azure-monitor-deploy-and-configure",
     # Add more mappings as needed
 }
 
