@@ -205,7 +205,8 @@ Deployment is fully automated through GitHub Actions. The workflow is configured
    - Check GitHub Actions logs for any deployment issues
 
 ## Screenshots
-![alt text](/Images/image.png)
+![alt text](/Images/portfolio_v.2.0.0_light_mode.png)
+![](/Images/portfolio_v.2.0.0_dark_mode.png)
 
 ##  Live Project
 
