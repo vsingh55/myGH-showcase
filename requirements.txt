@@ -1,0 +1,5 @@
+requests>=2.31.0
+typing-extensions>=4.5.0
+setuptools>=68.0.0
+wheel>=0.40.0
+python-dotenv>=1.0.0 
